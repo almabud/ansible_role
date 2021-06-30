@@ -1,6 +1,0 @@
----
-- name: Install and setup docker and docker swarm
-  hosts: vmservers
-  roles:
-    - role: '/home/almabud/Desktop/ansible_role/role-docker'
-    - {role: '/home/almabud/Desktop/ansible_role/role-jenkins', when: 'inventory_hostname == play_hosts[0]'}
