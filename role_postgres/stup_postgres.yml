@@ -1,0 +1,5 @@
+---
+- name: Install and configure postgres
+  hosts: postgresql_servers
+  roles:
+    - role: '/home/almabud/Desktop/ansible_role/role_postgres'

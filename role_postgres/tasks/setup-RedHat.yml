@@ -1,0 +1,33 @@
+---
+- name: Add PostgreSQL repo
+  yum:
+    name: "{{ postgresql_repo }}"
+    update_cache: yes
+    disable_gpg_check: yes
+  register: __postgresql_yum_repo_result
+  ignore_errors: true
+  until: __postgresql_yum_repo_result is succeeded
+  retries: 5
+  delay: 5
+  when: postgresql_repo is defined and __postgresql_yum_repo_result is not defined
+
+
+- name: Disable other PostgreSQL module
+  shell:
+    cmd: yum -qy module disable postgresql
+  when: postgresql_repo is defined and __postgresql_yum_repo_result is succeeded
+
+  
+- name: Ensure PostgreSQL packages are installed.
+  yum:
+    name: "{{ postgresql_packages }}"
+    state: present
+    update_cache: yes
+    enablerepo: "{{ postgresql_enablerepo | default(omit, true) }}"
+
+
+- name: Ensure PostgreSQL Python libraries are installed.
+  yum:
+    name: "{{ postgresql_python_library }}"
+    state: present
+    enablerepo: "{{ postgresql_enablerepo | default(omit, true) }}"
