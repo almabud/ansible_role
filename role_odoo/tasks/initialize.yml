@@ -1,0 +1,14 @@
+---
+- name: Ensure Firewall is disabled.
+  service:
+    name: "{{ firewall_daemon }}"
+    state: stopped
+  when: firewall_daemon is defined and stop_firewall == true
+
+
+- name: Ensure selinux is disabled.
+  selinux:
+    configfile: "{{ selinux_configfile }}"
+    state: disabled
+  when: disabled_selinux == true
+    

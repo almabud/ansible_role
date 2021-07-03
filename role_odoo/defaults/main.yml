@@ -1,0 +1,15 @@
+---
+disabled_selinux: false
+set_odoo_user_password: false
+
+# Odoo branch github url
+__odoo_repo_url: "https://www.github.com/odoo/odoo"
+
+
+odoo_conf:
+  {
+    admin_passwd: "admin",
+    addons_path: "{{ odoo_custom_addons_path }}"
+  }
+
+postgresql_role_path: "/home/almabud/Desktop/ansible_role/role_postgres"

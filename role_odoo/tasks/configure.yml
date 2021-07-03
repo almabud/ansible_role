@@ -1,0 +1,48 @@
+---
+# Ensure odoo log directory
+- name: Ensure odoo log directory.
+  file:
+    path: "{{ odoo_log_directory }}"
+    state: directory
+    owner: "{{ odoo_user }}"
+    group: "{{ odoo_user }}"
+
+
+- name: Ensure odoo log file
+  file:
+    path: "{{ odoo_log_directory }}/{{ odoo_log_filename }}"
+    state: touch
+    owner: "{{ odoo_user }}"
+    group: "{{ odoo_user }}"
+
+
+- name: Ensure odoo custom addons directory.
+  file:
+    path: "{{ odoo_custom_addons_path }}"
+    state: directory
+    owner: "{{ odoo_user }}"
+    group: "{{ odoo_user }}"
+
+
+- name: Configure configuration file.
+  template:
+    src: "odoo.conf.j2"
+    dest: "{{ odoo_conf_file }}"
+    owner: "{{ odoo_user }}"
+    group: "{{ odoo_user }}"
+    mode: 0777
+
+
+- name: Configure service file.
+  template:
+    src: "odoo.service.j2"
+    dest: "{{ odoo_service_file_path }}/{{ odoo_daemon_name }}.service"
+  notify: daemon_reload
+
+
+- name: Ensure daemon is started.
+  service:
+    name: "{{ odoo_daemon_name }}"
+    state: "{{ odoo_daemon_state }}"
+    enabled: "{{ enable_odoo_daemon }}"
+  when: odoo_daemon_state is defined

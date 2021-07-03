@@ -1,0 +1,44 @@
+---
+# - name: Ensure epel repo.
+#   yum:
+#     name: epel-release
+#     state: latest
+#     update_cache: yes
+
+
+# - name: Ensure wkhtmltopdf.
+#   yum:
+#     name: "{{ wkhtmltopdf }}"
+#     state: installed
+#     update_cache: yes
+#     disable_gpg_check: yes
+#   register: __wkhtmltopdf_result
+#   until: __wkhtmltopdf_result is succeeded
+#   retries: 5
+#   delay: 5
+#   when: __wkhtmltopdf_result is not defined or __wkhtmltopdf_result is failed
+
+
+- name: Enabled extra repos.
+  yum_repository:
+    name: "{{ item.name }}"
+    baseurl: "{{ item.baseurl }}"
+    enabled: yes
+  ignore_errors: yes
+  with_items: "{{ enabled_repos }}"
+
+
+- name: Ensure dependent packages.
+  yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{ dependencies_packages }}"
+  register: __dependencies_install_result
+  until: __dependencies_install_result is succeeded
+  retries: 5
+  delay: 5
+  when: __dependencies_install_result is not defined or __dependencies_install_result is failed
+
+
+  

@@ -1,0 +1,22 @@
+---
+# Odoo user
+__odoo_user: "odoo"
+__odoo_user_pass: "1234"
+__odoo_user_home_directory: "/opt/odoo"
+__odoo_version: "14.0"
+__odoo_vnv_name: "odoovnv"
+__log_directory_path: "/var/log/odoo14"
+__log_file_name: "odoo14.log"
+__odoo_installation_path: "odoo14"
+__custom_addons_directory_name: "custom-addons"
+__daemon_name: "odoo14"
+__enable_odoo_daemon: true
+__odoo_daemon_state: "started"
+__stop_firewall: true
+
+
+postgresql_users:
+  - name: "{{ odoo_user }}"
+    password: "1234"
+    role_attr_flags: "CREATEDB"
+    
