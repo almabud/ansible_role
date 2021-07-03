@@ -7,14 +7,14 @@ __odoo_version: "14.0"
 __odoo_vnv_name: "odoovnv"
 __log_directory_path: "/var/log/odoo14"
 __log_file_name: "odoo14.log"
-__odoo_installation_path: "odoo14"
+__odoo_installation_path: "odoo14" # Just the directory name. Script will create the directory inside odoo_user home directory
 __custom_addons_directory_name: "custom-addons"
 __daemon_name: "odoo14"
 __enable_odoo_daemon: true
 __odoo_daemon_state: "started"
 __stop_firewall: true
 
-
+# Define the user that needed for odoo
 postgresql_users:
   - name: "{{ odoo_user }}"
     password: "1234"
