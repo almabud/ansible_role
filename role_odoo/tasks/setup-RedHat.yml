@@ -1,22 +1,22 @@
 ---
-# - name: Ensure epel repo.
-#   yum:
-#     name: epel-release
-#     state: latest
-#     update_cache: yes
+- name: Ensure epel repo.
+  yum:
+    name: epel-release
+    state: latest
+    update_cache: yes
 
 
-# - name: Ensure wkhtmltopdf.
-#   yum:
-#     name: "{{ wkhtmltopdf }}"
-#     state: installed
-#     update_cache: yes
-#     disable_gpg_check: yes
-#   register: __wkhtmltopdf_result
-#   until: __wkhtmltopdf_result is succeeded
-#   retries: 5
-#   delay: 5
-#   when: __wkhtmltopdf_result is not defined or __wkhtmltopdf_result is failed
+- name: Ensure wkhtmltopdf.
+  yum:
+    name: "{{ wkhtmltopdf }}"
+    state: installed
+    update_cache: yes
+    disable_gpg_check: yes
+  register: __wkhtmltopdf_result
+  until: __wkhtmltopdf_result is succeeded
+  retries: 5
+  delay: 5
+  when: __wkhtmltopdf_result is not defined or __wkhtmltopdf_result is failed
 
 
 - name: Enabled extra repos.
