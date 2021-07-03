@@ -70,7 +70,7 @@
   become: yes
   become_user: "{{ odoo_user }}"
   register: __odoo_req_install_result
-  until: __odoo_req_install_result is succeeded
+  until: __odoo_req_install_result is finished
   retries: 5
   delay: 5
   when: __odoo_req_install_result is not defined or __odoo_req_install_result is failed
