@@ -35,10 +35,3 @@
     update_cache: yes
   with_items: "{{ dependencies_packages }}"
   register: __dependencies_install_result
-  until: __dependencies_install_result is finished
-  retries: 5
-  delay: 5
-  when: __dependencies_install_result is not defined or __dependencies_install_result is failed
-
-
-  
