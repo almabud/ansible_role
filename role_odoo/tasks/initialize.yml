@@ -10,5 +10,7 @@
   selinux:
     configfile: "{{ selinux_configfile }}"
     state: disabled
+  notify: reboot_system
   when: disabled_selinux == true
-    
+
+- meta: flash_handlers

@@ -116,7 +116,7 @@
 
 - name: Define selinux_configfile.
   set_fact:
-    selinux_configfile: "{{ __selinux_configfile | default('etc/selinux/config')  }}"
+    selinux_configfile: "{{ __selinux_configfile | default('/etc/selinux/config')  }}"
   when: selinux_configfile is not defined and disabled_selinux == true
 
 
