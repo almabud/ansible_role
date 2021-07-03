@@ -1,0 +1,80 @@
+---
+# Variable configuration.
+- include_tasks: variables.yml
+
+# Prepare the system for the installation
+- include_tasks: initialize.yml
+
+
+# Install and initialize postgresSQL
+- name: Ensure postgreSQL server is installed and the user is created.
+  include_role:
+    name: "{{ postgresql_role_path }}"
+
+
+# Setup/Install os dependent packages.
+- include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+
+# Create odoo user
+- name: Create odoo user.
+  user:
+    name: "{{ odoo_user }}"
+    create_home: yes
+    home: "{{ odoo_user_home_directory }}"
+    move_home: yes
+    password: "{{ odoo_user_password | default(omit) | password_hash('sha256') }}"
+    shell: /bin/bash
+    state: present
+    system: yes
+    # system: "{{ 'yes' if (odoo_user_password is defined) else 'no' }}"
+
+
+# Download odoo
+- name: Install odoo.
+  git:
+    repo: "{{ odoo_repo_url }}"
+    depth: 1
+    version: "{{ odoo_version }}"
+    dest: "{{ odoo_installation_path }}"
+  become: yes
+  become_user: "{{ odoo_user }}"
+  register: __odoo_install_result
+  until: __odoo_install_result is succeeded
+  retries: 5
+  delay: 5
+  when: __odoo_install_result is not defined or __odoo_install_result is failed
+  vars:
+    ansible_ssh_pipelining: true
+    # remote_tmp: /tmp/.ansible/tmp
+
+
+# Install virtual env (This is not needed as I used python -m venv)
+- name: Install virtualenv via pip
+  pip:
+    name: virtualenv
+    executable: pip3
+  become: yes
+  become_user: root
+
+
+# Install requirements
+- name: Create venv and install requirements.
+  pip:
+    chdir: "{{ odoo_user_home_directory }}"
+    requirements: "{{ odoo_installation_path }}/requirements.txt"
+    virtualenv: "{{ odoo_venv_path }}"
+    virtualenv_command: "python3 -m venv"
+    # virtualenv_python: python3
+  become: yes
+  become_user: "{{ odoo_user }}"
+  register: __odoo_req_install_result
+  until: __odoo_req_install_result is succeeded
+  retries: 5
+  delay: 5
+  when: __odoo_req_install_result is not defined or __odoo_req_install_result is failed
+
+
+# Include configuration.
+- include_tasks: configure.yml

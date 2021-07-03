@@ -1,0 +1,28 @@
+---
+__wkhtmltopdf: "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox-0.12.5-1.centos8.x86_64.rpm"
+
+# If need to enabled other repos
+__enabled_repos:
+  - name: powertools
+    baseurl: ''
+
+__dependencies_packages:
+  - zip 
+  - git 
+  - gcc 
+  - openldap-devel 
+  - python3 
+  - python3-devel 
+  - redhat-rpm-config 
+  - libxslt-devel 
+  - libjpeg-devel 
+  - freetype-devel 
+  - bzip2-devel
+
+__firewall_daemon: "firewalld"
+
+__odoo_service_file_path: "/etc/systemd/system"
+
+# __odoo_conf_file: "/etc/odoo14.conf"
+
+

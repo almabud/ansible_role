@@ -1,0 +1,144 @@
+---
+- name: Inclued OS-specific variables (RedHat).
+  include_vars: "{{ ansible_os_family }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when:
+  - ansible_os_family == 'RedHat'
+  - ansible_distribution != 'Fedora'
+
+
+- name: Define wkhtmtopdf.
+  set_fact:
+    wkhtmltopdf: "{{ __wkhtmltopdf }}"
+  when: wkhtmltopdf is not defined
+
+
+- name: Define dependencies_packages.
+  set_fact:
+    dependencies_packages: "{{ __dependencies_packages | list }}"
+  when: dependencies_packages is not defined
+
+
+- name: Define odoo installation url.
+  set_fact:
+    odoo_repo_url: "{{ __odoo_repo_url }}"
+  when: odoo_repo_url is not defined
+
+
+- name: Define odoo version.
+  set_fact:
+    odoo_version: "{{ __odoo_version }}"
+  when: odoo_version is not defined
+
+
+- name: Define odoo_user_home_directory.
+  set_fact:
+    odoo_user_home_directory: "{{ __odoo_user_home_directory | default('/opt/odoo') }}"
+  when: odoo_user_home_directory is not defined
+
+
+- name: Define odoo_venv_path.
+  set_fact:
+    odoo_venv_path: "{{ odoo_user_home_directory }}/{{ __odoo_vnv_name }}"
+  when: odoo_venv_path is not defined
+
+
+- name: Define odoo_installation_path.
+  set_fact:
+    odoo_installation_path: "{{ odoo_user_home_directory }}/{{ __odoo_installation_path | default('odoo') }}"
+  when: odoo_installation_path is not defined
+
+
+- name: Define odoo_service_file_path.
+  set_fact:
+    odoo_service_file_path: "{{ __odoo_service_file_path }}"
+  when: odoo_service_file_path is not defined
+
+
+- name: Define odoo_user.
+  set_fact:
+    odoo_user: "{{ __odoo_user }}"
+  when: odoo_user is not defined
+
+
+- name: Define odoo log_directory
+  set_fact:
+    odoo_log_directory: "{{ __log_directory_path | default('/var/log') }}"
+  when: odoo_log_directory is not defined
+
+
+- name: Define odoo log_filename
+  set_fact:
+    odoo_log_filename: "{{ __log_file_name | default('odoo.log') }}"
+  when: odoo_log_filename is not defined
+
+
+- name: Define odoo_custom_addons_path
+  set_fact:
+    odoo_custom_addons_path: "{{ odoo_installation_path }}/{{ __custom_addons_directory_name }}"
+  when: odoo_custom_addons_path is not defined
+
+
+- name: Define odoo_user_password.
+  set_fact:
+    odoo_user_password: "{{ __odoo_user_pass }}"
+  when: odoo_user_password is not defined and set_odoo_user_password == true
+
+
+- name: Define odoo_daemon_name.
+  set_fact:
+    odoo_daemon_name: "{{ __daemon_name }}"
+  when: odoo_daemon_name is not defined
+
+
+- name: Define enable_odoo_daemon.
+  set_fact:
+    enable_odoo_daemon: "{{ __enable_odoo_daemon }}"
+  when: enable_odoo_daemon is not defined
+
+
+- name: Define odoo_daemon_state.
+  set_fact:
+    odoo_daemon_state: "{{ __odoo_daemon_state }}"
+  when: odoo_daemon_state is not defined
+
+
+- name: Define odoo_conf_file.
+  set_fact:
+    odoo_conf_file: "{{ __odoo_conf_file | default('/etc/' + odoo_daemon_name + '.conf')}}"
+  when: odoo_conf_file is not defined
+
+
+- name: Define selinux_configfile.
+  set_fact:
+    selinux_configfile: "{{ __selinux_configfile | default('etc/selinux/config')  }}"
+  when: selinux_configfile is not defined and disabled_selinux == true
+
+
+- name: Define stop_firewall.
+  set_fact:
+    stop_firewall: "{{ __stop_firewall | default(false)  }}"
+  when: stop_firewall is not defined
+
+
+- name: Define firewall_daemon.
+  set_fact:
+    firewall_daemon: "{{ __firewall_daemon }}"
+  when: firewall_daemon is not defined
+
+
+- name: Define enable_odoo_daemon.
+  set_fact:
+    enable_odoo_daemon: "{{ __enable_odoo_daemon | default(true)  }}"
+  when: enable_odoo_daemon is not defined
+
+
+- name: Define odoo_daemon_state.
+  set_fact:
+    odoo_daemon_state: "{{ __enable_odoo_daemon | default('started')  }}"
+  when: odoo_daemon_state is not defined
+
+
+- name: Define enabled_repos.
+  set_fact:
+    enabled_repos: "{{ __enabled_repos | list }}"
+  when: enabled_repos is not defined

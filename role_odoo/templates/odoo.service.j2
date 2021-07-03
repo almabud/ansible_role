@@ -1,0 +1,16 @@
+[Unit]
+Description={{ odoo_service.description | default('Odoo service file') }}
+Requires={{ postgresql_daemon }}.service
+After=network.target {{ postgresql_daemon }}.service
+
+[Service]
+Type=simple
+SyslogIdentifier={{ odoo_service.syslog_identifier | default('odoo' + odoo_version) }}
+PermissionsStartOnly=true
+User={{ odoo_user }}
+Group={{ odoo_user }}
+ExecStart={{ odoo_venv_path }}/bin/python3 {{ odoo_installation_path }}/odoo-bin -c {{ odoo_conf_file }}
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
