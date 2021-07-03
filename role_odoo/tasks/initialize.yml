@@ -13,4 +13,4 @@
   notify: reboot_system
   when: disabled_selinux == true
 
-- meta: flash_handlers
+- meta: flush_handlers
