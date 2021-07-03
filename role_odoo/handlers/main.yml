@@ -3,3 +3,9 @@
 - name: daemon_reload
   systemd:
     daemon_reload: yes
+
+
+# Reboot system
+- name: reboot_system
+  reboot:
+    msg: "Reboot the system"
