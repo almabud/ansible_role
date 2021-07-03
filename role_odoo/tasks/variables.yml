@@ -108,6 +108,12 @@
   when: odoo_conf_file is not defined
 
 
+- name: Define disabled_selinux.
+  set_fact:
+    disabled_selinux: "{{ __disabled_selinux | default(false)  }}"
+  when: disabled_selinux is not defined
+
+
 - name: Define selinux_configfile.
   set_fact:
     selinux_configfile: "{{ __selinux_configfile | default('etc/selinux/config')  }}"
