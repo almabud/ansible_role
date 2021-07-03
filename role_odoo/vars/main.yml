@@ -13,6 +13,10 @@ __daemon_name: "odoo14"
 __enable_odoo_daemon: true
 __odoo_daemon_state: "started"
 __stop_firewall: true
+__disabled_selinux: true
+
+set_odoo_user_password: true
+
 
 # Define the user that needed for odoo
 postgresql_users:
